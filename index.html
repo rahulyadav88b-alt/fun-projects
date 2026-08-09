@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Quick Question!</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 450px;
+      width: 90%;
+      position: relative;
+    }
+
+    h1 {
+      color: #d63384;
+      font-size: 2rem;
+      margin-bottom: 30px;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      min-height: 60px;
+      position: relative;
+    }
+
+    button {
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.15s ease, background-color 0.2s;
+    }
+
+    #yesBtn {
+      background-color: #28a745;
+      color: white;
+      box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    }
+
+    #yesBtn:hover {
+      background-color: #218838;
+      transform: scale(1.08);
+    }
+
+    #noBtn {
+      background-color: #dc3545;
+      color: white;
+      box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+      position: absolute;
+      /* Positioned relative to .btn-container initially */
+      right: 20px; 
+    }
+
+    /* Secret message popup */
+    .success-message {
+      display: none;
+    }
+
+    .success-message h2 {
+      color: #28a745;
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .success-message p {
+      font-size: 1.2rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="card">
+    <div id="questionContainer">
+      <h1>Will you go out with me? 💖</h1>
+      <div class="btn-container">
+        <button id="yesBtn">Yes!</button>
+        <button id="noBtn">No</button>
+      </div>
+    </div>
+
+    <div class="success-message" id="successMessage">
+      <h2>Yay! Best decision ever! 🎉</h2>
+      <p>I'll pick you up at 7! 😊</p>
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const questionContainer = document.getElementById('questionContainer');
+    const successMessage = document.getElementById('successMessage');
+
+    // Function to move the "No" button to a random location inside the viewport
+    function moveButton() {
+      // Get dimensions of the window and the button
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+      const btnRect = noBtn.getBoundingClientRect();
+
+      // Ensure button stays well within screen boundaries (with a 20px padding)
+      const maxX = windowWidth - btnRect.width - 40;
+      const maxY = windowHeight - btnRect.height - 40;
+
+      const randomX = Math.max(20, Math.floor(Math.random() * maxX));
+      const randomY = Math.max(20, Math.floor(Math.random() * maxY));
+
+      // Switch to fixed position relative to the entire screen once triggered
+      noBtn.style.position = 'fixed';
+      noBtn.style.left = `${randomX}px`;
+      noBtn.style.top = `${randomY}px`;
+    }
+
+    // Triggers when user hovers over or taps the "No" button
+    noBtn.addEventListener('mouseover', moveButton);
+    noBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault(); // Prevents touch devices from clicking it before moving
+      moveButton();
+    });
+
+    // Triggers when user clicks "Yes"
+    yesBtn.addEventListener('click', () => {
+      questionContainer.style.display = 'none';
+      noBtn.style.display = 'none';
+      successMessage.style.display = 'block';
+    });
+  </script>
+
+</body>
+</html>
